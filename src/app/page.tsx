@@ -69,49 +69,53 @@ export default function Home() {
   }
 
   return (
-    <section className='mx-auto h-full max-w-2xl overflow-hidden rounded-2xl bg-white p-6 pb-0 shadow-lg md:w-[90vw] md:border md:p-6'>
-      {error && (
-        <div className='mb-4 rounded bg-red-100 p-3 text-red-700'>{error}</div>
-      )}
-      <form
-        className='sticky top-0 z-10 mb-4 bg-white pt-2 pb-4'
-        onSubmit={handleSubmit}
-      >
-        <h3 className='mb-6 text-center text-4xl font-extrabold text-gray-800'>
-          📝 Todo List
-        </h3>
-        <div className='flex overflow-hidden rounded-lg border border-gray-300 shadow-sm'>
-          <input
-            ref={title}
-            className='flex-1 px-4 py-2 text-gray-700 placeholder:text-gray-400 focus:outline-none'
-            type='text'
-            placeholder='Type your task here...'
-          />
-          <button
-            type='submit'
-            className='bg-blue-500 px-6 font-semibold text-white transition-colors hover:bg-blue-600'
-          >
-            Add
-          </button>
-        </div>
-      </form>
-
-      <div
-        className={`transition-all duration-300 ${
-          todos.length <= 0 ? 'max-h-0 opacity-0' : 'max-h-[70vh] opacity-100'
-        } overflow-y-auto pr-2`}
-      >
-        <ul className='list-none p-0'>
-          {todos.map((todo) => (
-            <TodoItem
-              key={crypto.randomUUID()}
-              todo={todo}
-              onDelete={deleteTodo}
-              onToggle={toggleTodo}
+    <div className='flex min-h-screen items-center justify-center bg-gray-100'>
+      <section className='mx-auto flex h-[90vh] max-w-2xl flex-col overflow-hidden rounded-2xl bg-white p-6 pb-0 shadow-lg md:w-[90vw] md:border md:p-6'>
+        {error && (
+          <div className='mb-4 rounded bg-red-100 p-3 text-red-700'>
+            {error}
+          </div>
+        )}
+        <form
+          className='sticky top-0 z-10 mb-4 bg-white pt-2 pb-4'
+          onSubmit={handleSubmit}
+        >
+          <h3 className='mb-6 text-center text-4xl font-extrabold text-gray-800'>
+            📝 Todo List
+          </h3>
+          <div className='flex overflow-hidden rounded-lg border border-gray-300 shadow-sm'>
+            <input
+              ref={title}
+              className='flex-1 px-4 py-2 text-gray-700 placeholder:text-gray-400 focus:outline-none'
+              type='text'
+              placeholder='Type your task here...'
             />
-          ))}
-        </ul>
-      </div>
-    </section>
+            <button
+              type='submit'
+              className='bg-blue-500 px-6 font-semibold text-white transition-colors hover:bg-blue-600'
+            >
+              Add
+            </button>
+          </div>
+        </form>
+
+        <div
+          className={`flex-1 overflow-y-auto pr-2 transition-all duration-300 ${
+            todos.length <= 0 ? 'max-h-0 opacity-0' : 'opacity-100'
+          }`}
+        >
+          <ul className='list-none p-0'>
+            {todos.map((todo) => (
+              <TodoItem
+                key={crypto.randomUUID()}
+                todo={todo}
+                onDelete={deleteTodo}
+                onToggle={toggleTodo}
+              />
+            ))}
+          </ul>
+        </div>
+      </section>
+    </div>
   )
 }
