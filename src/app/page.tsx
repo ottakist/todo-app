@@ -69,7 +69,7 @@ export default function Home() {
   }
 
   return (
-    <section className='mx-auto max-w-2xl overflow-hidden rounded-2xl bg-white p-6 pb-0 shadow-lg md:w-[90vw] md:border md:p-6'>
+    <section className='mx-auto h-full max-w-2xl overflow-hidden rounded-2xl bg-white p-6 pb-0 shadow-lg md:w-[90vw] md:border md:p-6'>
       {error && (
         <div className='mb-4 rounded bg-red-100 p-3 text-red-700'>{error}</div>
       )}
