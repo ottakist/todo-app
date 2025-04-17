@@ -1,6 +1,10 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import {
+  fetchTodos,
+  createTodo as createTodoAPI,
+  deleteTodo as deleteTodoAPI
+} from './api'
 import TodoItem from '../app/components/TodoItem'
 
 interface Todo {
@@ -11,44 +15,40 @@ interface Todo {
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([])
+  const [error, setError] = useState<string | null>(null)
   const title = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const fetchTodos = async () => {
+    const loadTodos = async () => {
       try {
-        const res = await axios.get<Todo[]>(
-          'https://jsonplaceholder.typicode.com/todos?_limit=10'
-        )
-        setTodos(res.data)
+        const todos = await fetchTodos()
+        setTodos(todos)
       } catch (err) {
         console.error('Error fetching todos:', err)
+        setError('Failed to fetch todos. Please try again later.')
       }
     }
 
-    fetchTodos()
+    loadTodos()
   }, [])
 
   const createTodo = async (title: string) => {
     try {
-      const res = await axios.post<Todo>(
-        'https://jsonplaceholder.typicode.com/todos',
-        {
-          title,
-          completed: false
-        }
-      )
-      setTodos([...todos, res.data])
+      const newTodo = await createTodoAPI(title)
+      setTodos([...todos, newTodo])
     } catch (err) {
       console.error('Error creating todo:', err)
+      setError('Failed to create todo. Please try again.')
     }
   }
 
   const deleteTodo = async (id: number) => {
     try {
-      await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      await deleteTodoAPI(id)
       setTodos(todos.filter((todo) => todo.id !== id))
     } catch (err) {
       console.error('Error deleting todo:', err)
+      setError('Failed to delete todo. Please try again.')
     }
   }
 
@@ -67,34 +67,40 @@ export default function Home() {
       title.current.value = ''
     }
   }
+
   return (
-    <section
-      className='mx-auto mt-12 w-[90vw] max-w-[35rem]'
-      onSubmit={handleSubmit}
-    >
-      <form className='mb-6 text-center'>
-        <h3 className='mb-4 text-center text-4xl font-bold'>Todo List</h3>
-        <div className='flex items-center'>
+    <section className='mx-auto max-w-2xl overflow-hidden rounded-2xl bg-white p-6 pb-0 shadow-lg md:w-[90vw] md:border md:p-6'>
+      {error && (
+        <div className='mb-4 rounded bg-red-100 p-3 text-red-700'>{error}</div>
+      )}
+      <form
+        className='sticky top-0 z-10 mb-4 bg-white pt-2 pb-4'
+        onSubmit={handleSubmit}
+      >
+        <h3 className='mb-6 text-center text-4xl font-extrabold text-gray-800'>
+          📝 Todo List
+        </h3>
+        <div className='flex overflow-hidden rounded-lg border border-gray-300 shadow-sm'>
           <input
             ref={title}
-            className='flex-1 rounded rounded-r-none border border-transparent bg-gray-100 p-1 pl-4 text-base text-gray-600'
+            className='flex-1 px-4 py-2 text-gray-700 placeholder:text-gray-400 focus:outline-none'
             type='text'
-            placeholder='Type the task'
+            placeholder='Type your task here...'
           />
           <button
             type='submit'
-            className='grid w-20 flex-0 items-center rounded-l-none rounded-r border-0 bg-blue-400 px-4 py-2 text-sm tracking-wider text-white capitalize transition hover:bg-blue-600'
+            className='bg-blue-500 px-6 font-semibold text-white transition-colors hover:bg-blue-600'
           >
-            Submit
+            Add
           </button>
         </div>
       </form>
 
-      <div className='grocery-container mt-8'>
+      <div className='max-h-[70vh] overflow-y-auto pr-2'>
         <ul className='list-none p-0'>
           {todos.map((todo) => (
             <TodoItem
-              key={todo.id}
+              key={crypto.randomUUID()}
               todo={todo}
               onDelete={deleteTodo}
               onToggle={toggleTodo}

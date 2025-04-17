@@ -12,16 +12,16 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, onToggle }) => {
   return (
-    <li className='flex items-center justify-between border-b border-gray-300 py-3 transition-colors hover:bg-gray-100'>
+    <li className='mb-3 flex items-center justify-between gap-4 rounded-xl border px-4 py-3 shadow-sm transition hover:shadow-md'>
       <div className='flex items-center gap-3'>
         <input
           type='checkbox'
           checked={todo.completed}
           onChange={() => onToggle(todo.id)}
-          className='h-4 w-4 accent-blue-500'
+          className='h-5 w-5 text-blue-500 focus:ring-blue-400'
         />
         <span
-          className={`text-lg ${
+          className={`text-base font-medium ${
             todo.completed ? 'text-gray-400 line-through' : 'text-gray-800'
           }`}
         >
@@ -30,7 +30,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, onToggle }) => {
       </div>
       <button
         onClick={() => onDelete(todo.id)}
-        className='rounded bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:ring-offset-1 focus:outline-none'
+        className='rounded-md bg-red-400 px-4 py-2 text-sm text-white shadow-sm transition hover:bg-red-600'
       >
         Delete
       </button>
