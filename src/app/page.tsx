@@ -96,7 +96,11 @@ export default function Home() {
         </div>
       </form>
 
-      <div className='max-h-[70vh] overflow-y-auto pr-2'>
+      <div
+        className={`transition-all duration-300 ${
+          todos.length <= 0 ? 'max-h-0 opacity-0' : 'max-h-[70vh] opacity-100'
+        } overflow-y-auto pr-2`}
+      >
         <ul className='list-none p-0'>
           {todos.map((todo) => (
             <TodoItem
