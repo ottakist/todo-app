@@ -20,7 +20,7 @@ This is a simple Todo application built with [Next.js](https://nextjs.org) and s
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/todo-app.git
+   git clone https://github.com/ottakist/todo-app.git
    cd todo-app
    ```
 
